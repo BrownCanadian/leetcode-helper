@@ -67,14 +67,52 @@ document.addEventListener('DOMContentLoaded', () => {
     return element ? element.innerText : 'No content found in the specified div.';
   }
 
-api_key = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwYmQ1M2ZlZC1jMmY3LTRkNDAtYjEyMC04YmUwZGNhYTkyZDEiLCJlbWFpbCI6InJ1c2hhYW4uY2hhd2xhQGdtYWlsLmNvbSIsImlhdCI6MTcxNzEzMDExMCwiZXhwaXJlc0luIjoiMXkiLCJyYXRlTGltaXRQZXJNaW51dGUiOjM1MDAsInF1b3RhUmVzZXQiOiIxaCIsImNsaWVudEVudmlyb25tZW50Ijoic2VydmVyIiwic2VydmVyRW52aXJvbm1lbnQiOiJwcm9kdWN0aW9uIiwidmVyc2lvbiI6InYwLjIiLCJleHAiOjE3NDg2ODc3MTB9.00eHvdV4xZSLaZL-VkGZnihYDeNbIIGxa0r8rS8_CSUJ6HmEBJByDLERcUbRrwxh20zq1jAWh29s5tYxBBFOcg"
-base_url = "https://api-alpha.julep.ai/api"
+  
 
-  async function getHints(probelmdata){
-    client = Client(api_key=api_key, base_url=base_url)
-    print("Client initialized successfully")
-    console.log(probelmdata)
-    
+    const apiKey = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwYmQ1M2ZlZC1jMmY3LTRkNDAtYjEyMC04YmUwZGNhYTkyZDEiLCJlbWFpbCI6InJ1c2hhYW4uY2hhd2xhQGdtYWlsLmNvbSIsImlhdCI6MTcxNzEzMDExMCwiZXhwaXJlc0luIjoiMXkiLCJyYXRlTGltaXRQZXJNaW51dGUiOjM1MDAsInF1b3RhUmVzZXQiOiIxaCIsImNsaWVudEVudmlyb25tZW50Ijoic2VydmVyIiwic2VydmVyRW52aXJvbm1lbnQiOiJwcm9kdWN0aW9uIiwidmVyc2lvbiI6InYwLjIiLCJleHAiOjE3NDg2ODc3MTB9.00eHvdV4xZSLaZL-VkGZnihYDeNbIIGxa0r8rS8_CSUJ6HmEBJByDLERcUbRrwxh20zq1jAWh29s5tYxBBFOcg";
+    async function getHints(probelmdata){
 
-  }
+        const baseUrl = "https://api-alpha.julep.ai/api";
+        const agentData = {
+          name: "Jessica",
+          about: "Jessica's journey into the world of coding began in her teenage years when she developed a fascination for computers and how they work...",
+          instructions: [],
+          tools: [],
+          default_settings: {
+            temperature: 0.7,
+            top_p: 1,
+            min_p: 0.01,
+            presence_penalty: 0,
+            frequency_penalty: 0,
+            length_penalty: 1.0,
+            max_tokens: 150
+          },
+          model: "gpt-4",
+          docs: [],
+          metadata: {}
+        };
+      
+        try {
+          const response = await fetch(`${baseUrl}/agents`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify(agentData)
+          });
+      
+          if (!response.ok) {
+            throw new Error(`Error creating agent: ${response.statusText}`);
+          }
+      
+          const data = await response.json();
+          console.log('Agent created successfully:', data);
+          return data;
+        } catch (error) {
+          console.error(`Error: ${error.message}`);
+          return null;
+        }
+      
+    }
   
